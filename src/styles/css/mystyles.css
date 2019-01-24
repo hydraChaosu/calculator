@@ -6669,3 +6669,13 @@ label.panel-block {
 
 body {
   margin: 0px; }
+
+.main {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: blue; }
+
+.showValue {
+  text-align: right; }
