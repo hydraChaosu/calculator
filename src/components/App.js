@@ -30,30 +30,45 @@ class App extends Component {
     memory: 0,
     view: "",
     operationCount: 0,
-    operation: ""
+    operationStarted: false,
+    pressed: ""
   };
 
   buttonPressed = e => {
     const numbers = calcButtons.slice(0, 10);
     const operation = calcButtons.slice(10, 15);
     const CE = calcButtons.slice(-1);
-    const view = e.target.innerText;
-
-    if (numbers.indexOf(view) !== -1 || view === ".") {
-      this.setState(prevState => ({
-        view: prevState.view + view
-      }));
+    const buttonPressed = e.target.innerText;
+    const view = "";
+    if (numbers.indexOf(buttonPressed) !== -1 || buttonPressed === ".") {
+      if (this.state.view == "0" && numbers.indexOf(buttonPressed) !== -1) {
+        this.setState(prevState => ({
+          view: "0"
+        }));
+      } else if (this.operationStarted) {
+        this.setState(prevState => ({
+          view: buttonPressed,
+          operationStarted: false
+        }));
+      } else {
+        this.setState(prevState => ({
+          view: prevState.view + buttonPressed,
+          operationStarted: false
+        }));
+      }
     }
 
-    if (CE.indexOf(view) !== -1) {
+    if (CE.indexOf(buttonPressed) !== -1) {
       this.setState(prevState => ({
         view: "",
         memory: 0,
-        operationCount: 0
+        operationCount: 0,
+        operationStarted: false,
+        pressed: ""
       }));
     }
 
-    if (operation.indexOf(view) !== -1) {
+    if (operation.indexOf(buttonPressed) !== -1) {
       // if (this.state.operationCount < 2) {
       //   this.setState(prevState => ({
       //     view: "",
@@ -62,12 +77,12 @@ class App extends Component {
       //   }));
       // } else
 
-      switch (view) {
+      switch (buttonPressed) {
         case "+":
           this.setState(prevState => ({
-            view: "",
             memory: prevState.memory + parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1
+            operationCount: prevState.operationCount + 1,
+            operationStarted: true
           }));
           break;
         case "-":
@@ -103,6 +118,11 @@ class App extends Component {
           break;
       }
 
+      // if (this.operationStarted) {
+      //   this.setState(prevState => ({
+      //     view: ""
+      //   }));
+      // }
       // if (view == "+") {
       //   this.setState(prevState => ({
       //     view: "",
