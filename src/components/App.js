@@ -22,13 +22,15 @@ const calcButtons = [
   "*",
   "/",
   "=",
+  ".",
   "CE"
 ];
 class App extends Component {
   state = {
     memory: 0,
     view: "",
-    operationCount: 0
+    operationCount: 0,
+    operation: ""
   };
 
   buttonPressed = e => {
@@ -37,13 +39,13 @@ class App extends Component {
     const CE = calcButtons.slice(-1);
     const view = e.target.innerText;
 
-    if (numbers.indexOf(view) != -1) {
+    if (numbers.indexOf(view) !== -1 || view === ".") {
       this.setState(prevState => ({
         view: prevState.view + view
       }));
     }
 
-    if (CE.indexOf(view) != -1) {
+    if (CE.indexOf(view) !== -1) {
       this.setState(prevState => ({
         view: "",
         memory: 0,
@@ -51,7 +53,7 @@ class App extends Component {
       }));
     }
 
-    if (operation.indexOf(view) != -1) {
+    if (operation.indexOf(view) !== -1) {
       // if (this.state.operationCount < 2) {
       //   this.setState(prevState => ({
       //     view: "",
@@ -59,13 +61,55 @@ class App extends Component {
       //     operationCount: prevState.operationCount + 1
       //   }));
       // } else
-      if (view == "+") {
-        this.setState(prevState => ({
-          view: "",
-          memory: prevState.memory + parseInt(prevState.view),
-          operationCount: prevState.operationCount + 1
-        }));
+
+      switch (view) {
+        case "+":
+          this.setState(prevState => ({
+            view: "",
+            memory: prevState.memory + parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1
+          }));
+          break;
+        case "-":
+          this.setState(prevState => ({
+            view: "",
+            memory: prevState.memory - parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1
+          }));
+          break;
+        case "*":
+          this.setState(prevState => ({
+            view: "",
+            memory: prevState.memory * parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1
+          }));
+          break;
+
+        case "/":
+          this.setState(prevState => ({
+            view: "",
+            memory: prevState.memory / parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1
+          }));
+          break;
+
+        case "=":
+          this.setState(prevState => ({
+            view: prevState.memory,
+            operationCount: prevState.operationCount + 1
+          }));
+          break;
+        default:
+          break;
       }
+
+      // if (view == "+") {
+      //   this.setState(prevState => ({
+      //     view: "",
+      //     memory: prevState.memory + parseInt(prevState.view),
+      //     operationCount: prevState.operationCount + 1
+      //   }));
+      // }
     }
 
     // if (view == "+" && this.state.operationCount >= 2) {
