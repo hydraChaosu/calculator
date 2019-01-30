@@ -45,7 +45,8 @@ class App extends Component {
         this.setState(prevState => ({
           view: "0"
         }));
-      } else if (this.operationStarted) {
+      } else if (this.state.operationStarted) {
+        console.log("started");
         this.setState(prevState => ({
           view: buttonPressed,
           operationStarted: false
@@ -69,14 +70,6 @@ class App extends Component {
     }
 
     if (operation.indexOf(buttonPressed) !== -1) {
-      // if (this.state.operationCount < 2) {
-      //   this.setState(prevState => ({
-      //     view: "",
-      //     memory: parseInt(prevState.view),
-      //     operationCount: prevState.operationCount + 1
-      //   }));
-      // } else
-
       switch (buttonPressed) {
         case "+":
           this.setState(prevState => ({
@@ -87,24 +80,33 @@ class App extends Component {
           break;
         case "-":
           this.setState(prevState => ({
-            view: "",
-            memory: prevState.memory - parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1
+            memory:
+              prevState.memory !== 0
+                ? prevState.memory - parseFloat(prevState.view)
+                : parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1,
+            operationStarted: true
           }));
           break;
         case "*":
           this.setState(prevState => ({
-            view: "",
-            memory: prevState.memory * parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1
+            memory:
+              prevState.memory !== 0
+                ? prevState.memory * parseFloat(prevState.view)
+                : parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1,
+            operationStarted: true
           }));
           break;
 
         case "/":
           this.setState(prevState => ({
-            view: "",
-            memory: prevState.memory / parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1
+            memory:
+              prevState.memory !== 0
+                ? prevState.memory / parseFloat(prevState.view)
+                : parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1,
+            operationStarted: true
           }));
           break;
 
@@ -117,28 +119,7 @@ class App extends Component {
         default:
           break;
       }
-
-      // if (this.operationStarted) {
-      //   this.setState(prevState => ({
-      //     view: ""
-      //   }));
-      // }
-      // if (view == "+") {
-      //   this.setState(prevState => ({
-      //     view: "",
-      //     memory: prevState.memory + parseInt(prevState.view),
-      //     operationCount: prevState.operationCount + 1
-      //   }));
-      // }
     }
-
-    // if (view == "+" && this.state.operationCount >= 2) {
-    //   this.setState(prevState => ({
-    //     view: "",
-    //     memory: prevState.memory + parseInt(prevState.view),
-    //     operationCount: prevState.operationCount + 1
-    //   }));
-    // }
   };
 
   render() {
