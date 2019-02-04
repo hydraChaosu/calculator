@@ -88,7 +88,7 @@ class App extends Component {
       }));
     }
 
-    if (operation.indexOf(buttonPressed) !== -1) {
+    if (operation.indexOf(buttonPressed) !== -1 && this.state.view !== "") {
       switch (buttonPressed) {
         // case "+":
         //   this.setState(prevState => ({
@@ -144,7 +144,8 @@ class App extends Component {
               parseFloat(prevState.view)
             ),
             view: "",
-            operationCount: prevState.operationCount + 1
+            operationCount: prevState.operationCount + 1,
+            prevOperation: ""
           }));
           break;
         default:
@@ -152,7 +153,7 @@ class App extends Component {
             view: "",
             memory:
               prevState.memory !== 0
-                ? operators[prevState.prevOperation](
+                ? operators[buttonPressed](
                     prevState.memory,
                     parseFloat(prevState.view)
                   )
