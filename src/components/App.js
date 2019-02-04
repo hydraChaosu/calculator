@@ -34,10 +34,10 @@ const operators = {
     return a - b;
   },
   "*": function(a, b) {
-    return a - b;
+    return a * b;
   },
   "/": function(a, b) {
-    return a - b;
+    return a / b;
   }
 };
 class App extends Component {
@@ -90,48 +90,52 @@ class App extends Component {
 
     if (operation.indexOf(buttonPressed) !== -1) {
       switch (buttonPressed) {
-        case "+":
-          this.setState(prevState => ({
-            memory: prevState.memory + parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1,
-            operationStarted: true,
-            prevOperation: "+"
-          }));
-          break;
-        case "-":
-          this.setState(prevState => ({
-            memory:
-              prevState.memory !== 0 || prevState.operationCount > 0
-                ? prevState.memory - parseFloat(prevState.view)
-                : parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1,
-            operationStarted: true,
-            prevOperation: "-"
-          }));
-          break;
-        case "*":
-          this.setState(prevState => ({
-            memory:
-              prevState.memory !== 0
-                ? prevState.memory * parseFloat(prevState.view)
-                : parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1,
-            operationStarted: true,
-            prevOperation: "*"
-          }));
-          break;
+        // case "+":
+        //   this.setState(prevState => ({
+        //     view: "",
+        //     memory: prevState.memory + parseFloat(prevState.view),
+        //     operationCount: prevState.operationCount + 1,
+        //     operationStarted: true,
+        //     prevOperation: "+"
+        //   }));
+        //   break;
+        // case "-":
+        //   this.setState(prevState => ({
+        //     view: "",
+        //     memory:
+        //       prevState.memory !== 0 || prevState.operationCount > 0
+        //         ? prevState.memory - parseFloat(prevState.view)
+        //         : parseFloat(prevState.view),
+        //     operationCount: prevState.operationCount + 1,
+        //     operationStarted: true,
+        //     prevOperation: "-"
+        //   }));
+        //   break;
+        // case "*":
+        //   this.setState(prevState => ({
+        //     view: "",
+        //     memory:
+        //       prevState.memory !== 0
+        //         ? prevState.memory * parseFloat(prevState.view)
+        //         : parseFloat(prevState.view),
+        //     operationCount: prevState.operationCount + 1,
+        //     operationStarted: true,
+        //     prevOperation: "*"
+        //   }));
+        //   break;
 
-        case "/":
-          this.setState(prevState => ({
-            memory:
-              prevState.memory !== 0
-                ? prevState.memory / parseFloat(prevState.view)
-                : parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1,
-            operationStarted: true,
-            prevOperation: "/"
-          }));
-          break;
+        // case "/":
+        //   this.setState(prevState => ({
+        //     view: "",
+        //     memory:
+        //       prevState.memory !== 0
+        //         ? prevState.memory / parseFloat(prevState.view)
+        //         : parseFloat(prevState.view),
+        //     operationCount: prevState.operationCount + 1,
+        //     operationStarted: true,
+        //     prevOperation: "/"
+        //   }));
+        //   break;
 
         case "=":
           this.setState(prevState => ({
@@ -139,11 +143,24 @@ class App extends Component {
               prevState.memory,
               parseFloat(prevState.view)
             ),
-            view: prevState.memory,
+            view: "",
             operationCount: prevState.operationCount + 1
           }));
           break;
         default:
+          this.setState(prevState => ({
+            view: "",
+            memory:
+              prevState.memory !== 0
+                ? operators[prevState.prevOperation](
+                    prevState.memory,
+                    parseFloat(prevState.view)
+                  )
+                : parseFloat(prevState.view),
+            operationCount: prevState.operationCount + 1,
+            operationStarted: true,
+            prevOperation: buttonPressed
+          }));
           break;
       }
     }
