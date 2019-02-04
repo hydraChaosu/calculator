@@ -31,7 +31,7 @@ class App extends Component {
     view: "",
     operationCount: 0,
     operationStarted: false,
-    pressed: ""
+    prevOperation: ""
   };
 
   buttonPressed = e => {
@@ -65,7 +65,7 @@ class App extends Component {
         memory: 0,
         operationCount: 0,
         operationStarted: false,
-        pressed: ""
+        prevOperation: ""
       }));
     }
 
@@ -75,17 +75,19 @@ class App extends Component {
           this.setState(prevState => ({
             memory: prevState.memory + parseFloat(prevState.view),
             operationCount: prevState.operationCount + 1,
-            operationStarted: true
+            operationStarted: true,
+            prevOperation: "+"
           }));
           break;
         case "-":
           this.setState(prevState => ({
             memory:
-              prevState.memory !== 0
+              prevState.memory !== 0 || prevState.operationCount > 0
                 ? prevState.memory - parseFloat(prevState.view)
                 : parseFloat(prevState.view),
             operationCount: prevState.operationCount + 1,
-            operationStarted: true
+            operationStarted: true,
+            prevOperation: "-"
           }));
           break;
         case "*":
@@ -95,7 +97,8 @@ class App extends Component {
                 ? prevState.memory * parseFloat(prevState.view)
                 : parseFloat(prevState.view),
             operationCount: prevState.operationCount + 1,
-            operationStarted: true
+            operationStarted: true,
+            prevOperation: "*"
           }));
           break;
 
@@ -106,7 +109,8 @@ class App extends Component {
                 ? prevState.memory / parseFloat(prevState.view)
                 : parseFloat(prevState.view),
             operationCount: prevState.operationCount + 1,
-            operationStarted: true
+            operationStarted: true,
+            prevOperation: "/"
           }));
           break;
 
@@ -130,7 +134,7 @@ class App extends Component {
     return (
       <div className="main">
         <div className="calc">
-          <View view={view} />
+          <View view={view} memory={memory} />
           {Buttons}
         </div>
       </div>
