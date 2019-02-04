@@ -25,6 +25,21 @@ const calcButtons = [
   ".",
   "CE"
 ];
+//StackOF
+const operators = {
+  "+": function(a, b) {
+    return a + b;
+  },
+  "-": function(a, b) {
+    return a - b;
+  },
+  "*": function(a, b) {
+    return a - b;
+  },
+  "/": function(a, b) {
+    return a - b;
+  }
+};
 class App extends Component {
   state = {
     memory: 0,
@@ -39,7 +54,11 @@ class App extends Component {
     const operation = calcButtons.slice(10, 15);
     const CE = calcButtons.slice(-1);
     const buttonPressed = e.target.innerText;
-    const view = "";
+    // if (this.state.prevOperation) {
+    // this.setState(prevState => ({
+    //   memory: `${prevState.memory} ${parseFloat(prevState.view)}`
+    // }))
+    // }
     if (numbers.indexOf(buttonPressed) !== -1 || buttonPressed === ".") {
       if (this.state.view == "0" && numbers.indexOf(buttonPressed) !== -1) {
         this.setState(prevState => ({
@@ -116,6 +135,10 @@ class App extends Component {
 
         case "=":
           this.setState(prevState => ({
+            memory: operators[prevState.prevOperation](
+              prevState.memory,
+              parseFloat(prevState.view)
+            ),
             view: prevState.memory,
             operationCount: prevState.operationCount + 1
           }));
