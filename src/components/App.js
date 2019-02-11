@@ -14,12 +14,14 @@ const calcButtons = [
   "8",
   "9",
   "0",
+  ".",
   "+",
   "-",
   "*",
   "/",
   "=",
-  ".",
+  "**",
+  "sqrt",
   "CE"
 ];
 
@@ -36,8 +38,11 @@ const operators = {
   "/": function(a, b) {
     return a / b;
   },
-  "=": function(a, b) {
-    return;
+  "**": function(a, b) {
+    return a ** b;
+  },
+  "sqrt": function(a, b) {
+    return Math.pow(a, 1 / b);
   }
 };
 class App extends Component {
@@ -50,13 +55,15 @@ class App extends Component {
   };
 
   buttonPressed = e => {
-    const numbers = calcButtons.slice(0, 10);
-    const operation = calcButtons.slice(10, 15);
+    const numbers = calcButtons.slice(0, 11);
+    const operation = calcButtons.slice(11, 18);
     const CE = calcButtons.slice(-1);
     const buttonPressed = e.target.innerText;
-
-    if (numbers.indexOf(buttonPressed) !== -1 || buttonPressed === ".") {
-      if (buttonPressed === "." && this.state.view.includes(".")) {
+    if (numbers.indexOf(buttonPressed) !== -1) {
+      if (
+        buttonPressed === "." &&
+        (this.state.view.includes(".") || this.state.view === "")
+      ) {
         return;
       } else if (this.state.view == "0" && buttonPressed === "0") {
         this.setState(prevState => ({
