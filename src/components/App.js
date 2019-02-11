@@ -3,9 +3,6 @@ import "../App.css";
 import "../styles/css/mystyles.css";
 import View from "./View";
 import Btn from "./Btn";
-//niekontrolowany komponent
-//zamiast e.target value robimy referencje
-//w kontorolowanym komponencie używamy  e.taregt.vale
 const calcButtons = [
   "1",
   "2",
@@ -44,9 +41,9 @@ class App extends Component {
   state = {
     memory: 0,
     view: "",
-    operationCount: 0,
     operationStarted: false,
-    prevOperation: ""
+    prevOperation: "",
+    viewOn: false
   };
 
   buttonPressed = e => {
@@ -54,26 +51,26 @@ class App extends Component {
     const operation = calcButtons.slice(10, 15);
     const CE = calcButtons.slice(-1);
     const buttonPressed = e.target.innerText;
-    // if (this.state.prevOperation) {
-    // this.setState(prevState => ({
-    //   memory: `${prevState.memory} ${parseFloat(prevState.view)}`
-    // }))
-    // }
+
     if (numbers.indexOf(buttonPressed) !== -1 || buttonPressed === ".") {
-      if (this.state.view == "0" && numbers.indexOf(buttonPressed) !== -1) {
+      if (buttonPressed === "." && this.state.view.includes(".")) {
+        return;
+      } else if (this.state.view == "0" && buttonPressed === "0") {
         this.setState(prevState => ({
-          view: "0"
+          view: "0",
+          viewOn: true
         }));
       } else if (this.state.operationStarted) {
-        console.log("started");
         this.setState(prevState => ({
           view: buttonPressed,
-          operationStarted: false
+          operationStarted: false,
+          viewOn: true
         }));
       } else {
         this.setState(prevState => ({
           view: prevState.view + buttonPressed,
-          operationStarted: false
+          operationStarted: false,
+          viewOn: true
         }));
       }
     }
@@ -82,61 +79,18 @@ class App extends Component {
       this.setState(prevState => ({
         view: "",
         memory: 0,
-        operationCount: 0,
         operationStarted: false,
-        prevOperation: ""
+        prevOperation: "",
+        viewOn: true
       }));
     }
 
     if (operation.indexOf(buttonPressed) !== -1 && this.state.view !== "") {
+      if (this.state.prevOperation === "=") {
+        return;
+      }
+
       switch (buttonPressed) {
-        // case "+":
-        //   this.setState(prevState => ({
-        //     view: "",
-        //     memory: prevState.memory + parseFloat(prevState.view),
-        //     operationCount: prevState.operationCount + 1,
-        //     operationStarted: true,
-        //     prevOperation: "+"
-        //   }));
-        //   break;
-        // case "-":
-        //   this.setState(prevState => ({
-        //     view: "",
-        //     memory:
-        //       prevState.memory !== 0 || prevState.operationCount > 0
-        //         ? prevState.memory - parseFloat(prevState.view)
-        //         : parseFloat(prevState.view),
-        //     operationCount: prevState.operationCount + 1,
-        //     operationStarted: true,
-        //     prevOperation: "-"
-        //   }));
-        //   break;
-        // case "*":
-        //   this.setState(prevState => ({
-        //     view: "",
-        //     memory:
-        //       prevState.memory !== 0
-        //         ? prevState.memory * parseFloat(prevState.view)
-        //         : parseFloat(prevState.view),
-        //     operationCount: prevState.operationCount + 1,
-        //     operationStarted: true,
-        //     prevOperation: "*"
-        //   }));
-        //   break;
-
-        // case "/":
-        //   this.setState(prevState => ({
-        //     view: "",
-        //     memory:
-        //       prevState.memory !== 0
-        //         ? prevState.memory / parseFloat(prevState.view)
-        //         : parseFloat(prevState.view),
-        //     operationCount: prevState.operationCount + 1,
-        //     operationStarted: true,
-        //     prevOperation: "/"
-        //   }));
-        //   break;
-
         case "=":
           this.setState(prevState => ({
             memory: operators[prevState.prevOperation](
@@ -144,8 +98,8 @@ class App extends Component {
               parseFloat(prevState.view)
             ),
             view: "",
-            operationCount: prevState.operationCount + 1,
-            prevOperation: ""
+            prevOperation: "=",
+            viewOn: false
           }));
           break;
         default:
@@ -153,17 +107,22 @@ class App extends Component {
             view: "",
             memory:
               prevState.memory !== 0
-                ? operators[buttonPressed](
+                ? operators[this.state.prevOperation](
                     prevState.memory,
                     parseFloat(prevState.view)
                   )
                 : parseFloat(prevState.view),
-            operationCount: prevState.operationCount + 1,
             operationStarted: true,
-            prevOperation: buttonPressed
+            prevOperation: buttonPressed,
+            viewOn: false
           }));
           break;
       }
+    } else if (operation.indexOf(buttonPressed) !== -1) {
+      this.setState(prevState => ({
+        prevOperation: buttonPressed,
+        viewOn: false
+      }));
     }
   };
 
@@ -175,7 +134,12 @@ class App extends Component {
     return (
       <div className="main">
         <div className="calc">
-          <View view={view} memory={memory} />
+          <View
+            view={view}
+            memory={memory}
+            viewOn={this.state.viewOn}
+            operation={this.state.prevOperation}
+          />
           {Buttons}
         </div>
       </div>
