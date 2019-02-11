@@ -22,7 +22,7 @@ const calcButtons = [
   ".",
   "CE"
 ];
-//StackOF
+
 const operators = {
   "+": function(a, b) {
     return a + b;
@@ -35,6 +35,9 @@ const operators = {
   },
   "/": function(a, b) {
     return a / b;
+  },
+  "=": function(a, b) {
+    return;
   }
 };
 class App extends Component {
@@ -86,10 +89,6 @@ class App extends Component {
     }
 
     if (operation.indexOf(buttonPressed) !== -1 && this.state.view !== "") {
-      if (this.state.prevOperation === "=") {
-        return;
-      }
-
       switch (buttonPressed) {
         case "=":
           this.setState(prevState => ({
@@ -98,7 +97,7 @@ class App extends Component {
               parseFloat(prevState.view)
             ),
             view: "",
-            prevOperation: "=",
+            prevOperation: "",
             viewOn: false
           }));
           break;
@@ -120,7 +119,7 @@ class App extends Component {
       }
     } else if (operation.indexOf(buttonPressed) !== -1) {
       this.setState(prevState => ({
-        prevOperation: buttonPressed,
+        prevOperation: buttonPressed === "=" ? "" : buttonPressed,
         viewOn: false
       }));
     }

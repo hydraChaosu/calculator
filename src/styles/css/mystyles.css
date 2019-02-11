@@ -6683,7 +6683,7 @@ body {
 .showValue {
   text-align: right;
   color: yellow;
-  flex-basis: 90%;
+  flex-basis: 95%;
   background-color: #000;
   padding: 10px;
   min-height: 44px; }
