@@ -44,3 +44,29 @@ body {
   border: none;
   cursor: pointer;
 }
+
+@media (max-width: 600px) {
+  .calc {
+    height: 80vh;
+    min-width: 80vw;
+  }
+}
+
+@media (max-width: 400px) {
+   .calc {
+     height: 100vh;
+     min-width: 100vw;
+   }
+ }
+
+@media (orientation: landscape) and (max-width: 830px) {
+  .calc {
+    height: 100vh;
+    min-width: 100vw;
+  }
+
+  .btn {
+    flex-basis: 20%;
+    margin: 10px;
+  }
+}
