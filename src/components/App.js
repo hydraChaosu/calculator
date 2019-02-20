@@ -129,7 +129,9 @@ class App extends Component {
             memory:
               prevState.memory === 0 &&
               (prevState.prevOperation === "**" ||
-                prevState.prevOperation === "sqrt")
+                prevState.prevOperation === "sqrt" ||
+                prevState.prevOperation === "*" ||
+                prevState.prevOperation === "/")
                 ? parseFloat(prevState.view)
                 : operators[prevState.prevOperation](
                     prevState.memory,
