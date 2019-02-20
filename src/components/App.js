@@ -124,23 +124,18 @@ class App extends Component {
           break;
         default:
           this.setState(prevState => ({
+            // if memory 0'starting point of calc' then dont do ** and sqrt becouse it reslove it as 0 just add and tak it as first parametr
             view: "",
-            memory: operators[prevState.prevOperation](
-              prevState.memory,
-              parseFloat(prevState.view)
-            ),
+            memory:
+              prevState.memory === 0 &&
+              (prevState.prevOperation === "**" ||
+                prevState.prevOperation === "sqrt")
+                ? parseFloat(prevState.view)
+                : operators[prevState.prevOperation](
+                    prevState.memory,
+                    parseFloat(prevState.view)
+                  ),
 
-            // memory: operators[this.state.prevOperation](
-            //   prevState.memory,
-            //   parseFloat(prevState.view)
-            // ),
-
-            // prevState.memory !== 0
-            //   ? operators[this.state.prevOperation](
-            //       prevState.memory,
-            //       parseFloat(prevState.view)
-            //     )
-            //   : parseFloat(prevState.view),
             operationStarted: true,
             prevOperation: buttonPressed,
             viewOn: false
