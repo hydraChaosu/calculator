@@ -59,6 +59,10 @@ class App extends Component {
     const operation = calcButtons.slice(11, 18);
     const CE = calcButtons.slice(-1);
     const buttonPressed = e.target.innerText;
+    // duplicate .
+    // duplicat 0
+    // show what you clicked after operation is pressed
+    // add numbers to view
     if (numbers.indexOf(buttonPressed) !== -1) {
       if (
         buttonPressed === "." &&
@@ -94,7 +98,17 @@ class App extends Component {
         viewOn: true
       }));
     }
-
+    //add prevoperation before operation if empty
+    if (
+      operation.indexOf(buttonPressed) !== -1 &&
+      this.state.prevOperation === ""
+    ) {
+      this.setState(prevState => ({
+        prevOperation: buttonPressed === "=" ? "" : buttonPressed,
+        viewOn: false
+      }));
+    }
+    //do math and add operation if not empty
     if (operation.indexOf(buttonPressed) !== -1 && this.state.view !== "") {
       switch (buttonPressed) {
         case "=":
@@ -111,16 +125,21 @@ class App extends Component {
         default:
           this.setState(prevState => ({
             view: "",
-            memory: operators[this.state.prevOperation](
+            memory: operators[prevState.prevOperation](
               prevState.memory,
               parseFloat(prevState.view)
             ),
 
+            // memory: operators[this.state.prevOperation](
+            //   prevState.memory,
+            //   parseFloat(prevState.view)
+            // ),
+
             // prevState.memory !== 0
             //   ? operators[this.state.prevOperation](
-            //     prevState.memory,
-            //     parseFloat(prevState.view)
-            //   )
+            //       prevState.memory,
+            //       parseFloat(prevState.view)
+            //     )
             //   : parseFloat(prevState.view),
             operationStarted: true,
             prevOperation: buttonPressed,
