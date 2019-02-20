@@ -26,22 +26,22 @@ const calcButtons = [
 ];
 
 const operators = {
-  "+": function (a, b) {
+  "+": function(a, b) {
     return a + b;
   },
-  "-": function (a, b) {
+  "-": function(a, b) {
     return a - b;
   },
-  "*": function (a, b) {
+  "*": function(a, b) {
     return a * b;
   },
-  "/": function (a, b) {
+  "/": function(a, b) {
     return a / b;
   },
-  "**": function (a, b) {
+  "**": function(a, b) {
     return a ** b;
   },
-  "sqrt": function (a, b) {
+  sqrt: function(a, b) {
     return Math.pow(a, 1 / b);
   }
 };
@@ -111,13 +111,17 @@ class App extends Component {
         default:
           this.setState(prevState => ({
             view: "",
-            memory:
-              prevState.memory !== 0
-                ? operators[this.state.prevOperation](
-                  prevState.memory,
-                  parseFloat(prevState.view)
-                )
-                : parseFloat(prevState.view),
+            memory: operators[this.state.prevOperation](
+              prevState.memory,
+              parseFloat(prevState.view)
+            ),
+
+            // prevState.memory !== 0
+            //   ? operators[this.state.prevOperation](
+            //     prevState.memory,
+            //     parseFloat(prevState.view)
+            //   )
+            //   : parseFloat(prevState.view),
             operationStarted: true,
             prevOperation: buttonPressed,
             viewOn: false

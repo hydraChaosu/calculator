@@ -13,7 +13,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "startsass": "sass --sourcemap=none src/styles/sass/mystyles.scss:src/styles/css/mystyles.css"
+    "startsass": "sass --sourcemap=none src/styles/sass/mystyles.scss:src/styles/css/mystyles.css",
+    "clean2": "rimraf ./dist; mkdir ./dist",
+    "build2:sass": "node-sass -o ./dist/css .src/styles/sass/mystyles.scss",
+    "build2:js-compile": "mkdir ./dist/js; babel .src/components/app.js --out-file .dist/js/app.dist.js",
+    "build2": "yarn clean2 npm-run-all build2:*"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -23,5 +27,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "rimraf": "^2.6.3"
+  }
 }
