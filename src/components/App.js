@@ -59,6 +59,7 @@ class App extends Component {
     const operation = calcButtons.slice(11, 18);
     const CE = calcButtons.slice(-1);
     const buttonPressed = e.target.innerText;
+    let canEQatFirst = false;
     // duplicate .
     // duplicat 0
     // show what you clicked after operation is pressed
@@ -107,11 +108,18 @@ class App extends Component {
         prevOperation: buttonPressed === "=" ? "" : buttonPressed,
         viewOn: false
       }));
+      canEQatFirst = true;
     }
     //do math and add operation if not empty
     if (operation.indexOf(buttonPressed) !== -1 && this.state.view !== "") {
       switch (buttonPressed) {
         case "=":
+          if (canEQatFirst) {
+            this.setState(prevState => ({
+              viewOn: true
+            }));
+            break;
+          }
           this.setState(prevState => ({
             memory: operators[prevState.prevOperation](
               prevState.memory,
@@ -124,7 +132,7 @@ class App extends Component {
           break;
         default:
           this.setState(prevState => ({
-            // if memory 0'starting point of calc' then dont do ** and sqrt becouse it reslove it as 0 just add and tak it as first parametr
+            // if memory 0'starting point of calc' then dont do ** and sqrt becouse it reslove it as 0 just add and take it as first parametr
             view: "",
             memory:
               prevState.memory === 0 &&
@@ -174,3 +182,4 @@ class App extends Component {
 }
 
 export default App;
+// = cant be first operation error
